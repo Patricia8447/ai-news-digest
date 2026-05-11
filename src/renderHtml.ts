@@ -4,14 +4,23 @@ import type { Section, Category } from "./feeds.js";
 const SECTIONS: Section[] = ["国际", "中文"];
 const CATEGORIES: Category[] = ["金融", "政治", "社会", "娱乐"];
 const SECTION_ID: Record<Section, string> = { 国际: "intl", 中文: "cn" };
-const SECTION_ICON: Record<Section, string> = { 国际: "🌍", 中文: "🇨🇳" };
+const SECTION_LABEL: Record<Section, string> = { 国际: "🌍 国际", 中文: "🇨🇳 国内" };
 const CAT_ICON: Record<Category, string> = {
   金融: "📈",
   政治: "🏛️",
   社会: "🌐",
   娱乐: "🎬",
 };
-const MAX_PER_CAT = 10;
+const CAT_ID: Record<Category, string> = {
+  金融: "finance",
+  政治: "politics",
+  社会: "social",
+  娱乐: "entertainment",
+};
+
+const CARDS_PER_PAGE = 3;
+const MAX_FINANCE = 10;
+const MAX_OTHER = 6;
 
 function relativeTime(date: Date): string {
   const diff = Date.now() - date.getTime();
@@ -29,32 +38,59 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function articleHtml(a: Article): string {
-  const summary = a.summary ?? a.description ?? "（暂无摘要）";
-  return `
-      <article class="article">
-        <h3><a href="${escapeHtml(a.link)}" target="_blank" rel="noopener">${escapeHtml(a.title)}</a></h3>
-        <p class="summary">${escapeHtml(summary)}</p>
-        <div class="meta-row">
-          <span class="source">${escapeHtml(a.source)}</span>
-          <span class="time">${relativeTime(a.publishedAt)}</span>
-        </div>
-      </article>`;
+function cardHtml(a: Article): string {
+  const title = escapeHtml(a.titleZh || a.title);
+  const summary = escapeHtml(a.summary ?? a.description ?? "（暂无摘要）");
+  return `<div class="card">
+            <h3><a href="${escapeHtml(a.link)}" target="_blank" rel="noopener">${title}</a></h3>
+            <p class="summary">${summary}</p>
+            <div class="meta-row">
+              <span class="source">${escapeHtml(a.source)}</span>
+              <span class="time">${relativeTime(a.publishedAt)}</span>
+            </div>
+          </div>`;
 }
 
-function categoryHtml(cat: Category, articles: Article[]): string {
-  const limited = articles.slice(0, MAX_PER_CAT);
+function categoryHtml(section: Section, cat: Category, articles: Article[]): string {
+  const max = cat === "金融" ? MAX_FINANCE : MAX_OTHER;
+  const limited = articles.slice(0, max);
   if (limited.length === 0) return "";
+
+  const catId = `${SECTION_ID[section]}-${CAT_ID[cat]}`;
+
+  const pages: Article[][] = [];
+  for (let i = 0; i < limited.length; i += CARDS_PER_PAGE) {
+    pages.push(limited.slice(i, i + CARDS_PER_PAGE));
+  }
+  const totalPages = pages.length;
+
+  const pagesHtml = pages
+    .map(
+      (page, idx) =>
+        `<div class="card-page${idx === 0 ? " active" : ""}">${page.map(cardHtml).join("")}</div>`
+    )
+    .join("");
+
+  const pgHtml =
+    totalPages > 1
+      ? `<div class="pagination">
+            <button class="pg-btn" data-catid="${catId}" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="${catId}-pi">第 1 / ${totalPages} 页</span>
+            <button class="pg-btn" data-catid="${catId}" data-dir="1" aria-label="下一页">›</button>
+          </div>`
+      : `<div class="pagination"><span class="pg-info">第 1 / 1 页</span></div>`;
+
   return `
-    <div class="category">
-      <h2 class="cat-title">${CAT_ICON[cat]} ${cat} <span class="count">${limited.length} 篇</span></h2>
-      <div class="articles">${limited.map(articleHtml).join("")}
+    <div class="category" id="${catId}">
+      <div class="cat-header">
+        <span class="cat-title">${CAT_ICON[cat]} ${cat} <span class="count">${limited.length} 篇</span></span>
+        ${pgHtml}
       </div>
+      <div class="card-pages">${pagesHtml}</div>
     </div>`;
 }
 
 export function renderHtml(articles: Article[], dateStr: string): string {
-  // Build map: section → category → Article[]
   const map = new Map<Section, Map<Category, Article[]>>();
   for (const section of SECTIONS) {
     const catMap = new Map<Category, Article[]>();
@@ -75,17 +111,16 @@ export function renderHtml(articles: Article[], dateStr: string): string {
   const sectionsHtml = SECTIONS.map((section, i) => {
     const catMap = map.get(section)!;
     const catsHtml = CATEGORIES.map((cat) =>
-      categoryHtml(cat, catMap.get(cat)!)
+      categoryHtml(section, cat, catMap.get(cat)!)
     ).join("");
-    return `
-  <section id="${SECTION_ID[section]}"${i > 0 ? " hidden" : ""}>${catsHtml}
+    return `<section id="${SECTION_ID[section]}"${i > 0 ? " hidden" : ""}>${catsHtml}
   </section>`;
   }).join("");
 
   const tabsHtml = SECTIONS.map((section, i) => {
     const id = SECTION_ID[section];
-    return `<button class="tab${i === 0 ? " active" : ""}" data-target="${id}">${SECTION_ICON[section]} ${section}</button>`;
-  }).join("\n    ");
+    return `<button class="tab${i === 0 ? " active" : ""}" data-target="${id}">${SECTION_LABEL[section]}</button>`;
+  }).join("");
 
   return `<!DOCTYPE html>
 <html lang="zh">
@@ -104,86 +139,93 @@ export function renderHtml(articles: Article[], dateStr: string): string {
       line-height: 1.6;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 16px 48px;
-    }
-
-    /* ── Header ── */
-    header {
-      padding: 32px 0 20px;
+    /* ── Sticky Nav ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
       border-bottom: 1px solid #e0e0e0;
-      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .header-top {
+    .navbar-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
       display: flex;
-      align-items: baseline;
-      gap: 16px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
     }
-    header h1 {
-      font-size: 1.75rem;
+    .nav-brand {
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      color: #1a1a2e;
+      margin-right: 24px;
+      white-space: nowrap;
     }
-    .date-badge {
+    .nav-brand .date-badge {
       background: #1a73e8;
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-    .header-meta {
-      margin-top: 6px;
-      font-size: 0.83rem;
-      color: #666;
-    }
-
-    /* ── Tabs ── */
-    nav.tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 24px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      vertical-align: middle;
     }
     .tab {
       cursor: pointer;
       background: none;
       border: none;
-      font-size: 1rem;
+      border-bottom: 3px solid transparent;
+      font-size: 0.95rem;
       font-family: inherit;
-      padding: 8px 20px;
-      border-radius: 6px;
-      color: #555;
+      padding: 14px 18px;
+      color: #666;
       font-weight: 500;
-      transition: background 0.15s, color 0.15s;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
     }
-    .tab:hover { background: #e8eaed; color: #111; }
-    .tab.active {
-      background: #fff;
-      color: #1a73e8;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    .tab:hover { color: #1a73e8; }
+    .tab.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; }
+
+    /* ── Page body ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+    .header-meta {
+      font-size: 0.82rem;
+      color: #888;
+      margin-bottom: 20px;
     }
 
-    /* ── Category ── */
+    /* ── Category block ── */
     .category {
       background: #fff;
       border-radius: 10px;
-      padding: 20px 24px;
+      padding: 18px 20px 20px;
       margin-bottom: 20px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-    .cat-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 16px;
+    .cat-header {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cat-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .count {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 400;
       color: #888;
       background: #f0f2f5;
@@ -191,75 +233,117 @@ export function renderHtml(articles: Article[], dateStr: string): string {
       border-radius: 10px;
     }
 
-    /* ── Article ── */
-    .article {
-      padding: 14px 0;
-      border-bottom: 1px solid #f0f2f5;
+    /* ── Pagination controls ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
-    .article:last-child { border-bottom: none; padding-bottom: 0; }
-    .article:first-child { padding-top: 0; }
+    .pg-btn {
+      cursor: pointer;
+      background: #f0f2f5;
+      border: none;
+      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      transition: background 0.12s;
+    }
+    .pg-btn:hover:not(:disabled) { background: #dde1ea; }
+    .pg-btn:disabled { opacity: 0.35; cursor: default; }
+    .pg-info {
+      font-size: 0.78rem;
+      color: #666;
+      white-space: nowrap;
+    }
 
-    .article h3 {
-      font-size: 0.95rem;
+    /* ── Card pages ── */
+    .card-pages { overflow: hidden; }
+    .card-page {
+      display: none;
+      gap: 14px;
+    }
+    .card-page.active { display: flex; }
+
+    /* ── Card ── */
+    .card {
+      flex: 1;
+      min-width: 0;
+      background: #f8f9fc;
+      border: 1px solid #e8eaed;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card h3 {
+      font-size: 0.9rem;
       font-weight: 600;
       line-height: 1.45;
-      margin-bottom: 5px;
     }
-    .article h3 a {
+    .card h3 a {
       color: #1a1a2e;
       text-decoration: none;
     }
-    .article h3 a:hover { color: #1a73e8; text-decoration: underline; }
-
+    .card h3 a:hover { color: #1a73e8; text-decoration: underline; }
     .summary {
-      font-size: 0.875rem;
-      color: #444;
+      font-size: 0.83rem;
+      color: #555;
       line-height: 1.55;
-      margin-bottom: 6px;
+      flex: 1;
     }
-
     .meta-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.78rem;
+      gap: 8px;
+      font-size: 0.75rem;
+      flex-wrap: wrap;
     }
     .source {
       background: #eef2ff;
       color: #3b5bdb;
-      padding: 1px 8px;
+      padding: 1px 7px;
       border-radius: 4px;
       font-weight: 500;
     }
-    .time { color: #999; }
+    .time { color: #aaa; }
 
     /* ── Footer ── */
     footer {
       text-align: center;
       font-size: 0.78rem;
-      color: #aaa;
+      color: #bbb;
       padding-top: 32px;
     }
 
-    @media (max-width: 600px) {
-      .category { padding: 16px; }
-      header h1 { font-size: 1.4rem; }
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .card-page { flex-wrap: wrap; }
+      .card { min-width: calc(50% - 7px); flex: none; }
+    }
+    @media (max-width: 480px) {
+      .card { min-width: 100%; }
+      .navbar-inner { gap: 0; }
+      .tab { padding: 12px 12px; font-size: 0.88rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="header-top">
-        <h1>每日新闻</h1>
-        <span class="date-badge">${dateStr}</span>
-      </div>
-      <p class="header-meta">共 ${articles.length} 篇 &nbsp;·&nbsp; 更新于 ${now}</p>
-    </header>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <span class="nav-brand">每日新闻<span class="date-badge">${dateStr}</span></span>
+      ${tabsHtml}
+    </div>
+  </nav>
 
-    <nav class="tabs">
-    ${tabsHtml}
-    </nav>
+  <div class="container">
+    <p class="header-meta">共 ${articles.length} 篇 &nbsp;·&nbsp; 更新于 ${now}</p>
 
     ${sectionsHtml}
 
@@ -267,14 +351,48 @@ export function renderHtml(articles: Article[], dateStr: string): string {
   </div>
 
   <script>
-    document.querySelectorAll('.tab').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
-        document.querySelectorAll('section').forEach(function(s) { s.hidden = true; });
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.target).hidden = false;
+    (function () {
+      var curPage = {};
+
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+          document.querySelectorAll('section').forEach(function (s) { s.hidden = true; });
+          btn.classList.add('active');
+          var t = document.getElementById(btn.dataset.target);
+          if (t) t.hidden = false;
+        });
       });
-    });
+
+      // Pagination
+      document.querySelectorAll('.pg-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var catId = btn.dataset.catid;
+          var dir = parseInt(btn.dataset.dir, 10);
+          var cat = document.getElementById(catId);
+          if (!cat) return;
+
+          var pages = cat.querySelectorAll('.card-page');
+          var total = pages.length;
+          var cur = curPage[catId] || 0;
+          var next = cur + dir;
+          if (next < 0 || next >= total) return;
+
+          pages[cur].classList.remove('active');
+          pages[next].classList.add('active');
+          curPage[catId] = next;
+
+          var pi = document.getElementById(catId + '-pi');
+          if (pi) pi.textContent = '第 ' + (next + 1) + ' / ' + total + ' 页';
+
+          cat.querySelectorAll('.pg-btn').forEach(function (b) {
+            var d = parseInt(b.dataset.dir, 10);
+            b.disabled = (d < 0 && next === 0) || (d > 0 && next === total - 1);
+          });
+        });
+      });
+    })();
   </script>
 </body>
 </html>`;

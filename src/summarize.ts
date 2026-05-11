@@ -12,7 +12,7 @@ function sleep(ms: number): Promise<void> {
 async function getSummary(
   client: Anthropic,
   a: Article
-): Promise<string | undefined> {
+): Promise<{ titleZh?: string; summary?: string }> {
   const context = [
     `标题：${a.title}`,
     a.description ? `原文摘要：${a.description}` : "",
@@ -24,16 +24,26 @@ async function getSummary(
     try {
       const msg = await client.messages.create({
         model: MODEL,
-        max_tokens: 120,
+        max_tokens: 200,
         messages: [
           {
             role: "user",
-            content: `用一句话（不超过60字）概括以下新闻的核心内容，只输出摘要本身：\n\n${context}`,
+            content: `请完成两件事：\n1. 将标题翻译成中文（若已是中文则原样输出）\n2. 用一句话（不超过50字）概括核心内容\n\n只输出如下JSON，不输出其他内容：\n{"t":"中文标题","s":"中文摘要"}\n\n${context}`,
           },
         ],
       });
-      const text = msg.content[0];
-      return text.type === "text" ? text.text.trim() : undefined;
+      const block = msg.content[0];
+      if (block.type !== "text") return {};
+      const raw = block.text.trim();
+      try {
+        const json = JSON.parse(raw);
+        return {
+          titleZh: json.t ? String(json.t) : undefined,
+          summary: json.s ? String(json.s) : undefined,
+        };
+      } catch {
+        return { summary: raw };
+      }
     } catch (err: any) {
       const isRateLimit =
         err?.status === 429 ||
@@ -50,7 +60,7 @@ async function getSummary(
       throw err;
     }
   }
-  return undefined;
+  return {};
 }
 
 export async function addSummaries(articles: Article[]): Promise<Article[]> {
@@ -59,12 +69,11 @@ export async function addSummaries(articles: Article[]): Promise<Article[]> {
 
   for (let i = 0; i < articles.length; i++) {
     const a = articles[i];
-    // 第一条不需要等待，之后每条间隔 INTERVAL_MS
     if (i > 0) await sleep(INTERVAL_MS);
 
     try {
-      const summary = await getSummary(client, a);
-      results.push({ ...a, summary });
+      const result = await getSummary(client, a);
+      results.push({ ...a, ...result });
     } catch (err) {
       console.error(`  [摘要失败] "${a.title}": ${err}`);
       results.push(a);

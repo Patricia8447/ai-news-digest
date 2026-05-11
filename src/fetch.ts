@@ -10,6 +10,7 @@ export type Article = {
   category: Category;
   description?: string;
   summary?: string;
+  titleZh?: string;
 };
 
 const parser = new XMLParser({
@@ -59,7 +60,8 @@ async function fetchFeed(feed: FeedConfig): Promise<Article[]> {
     doc?.feed?.entry ??
     [];
 
-  const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+  const hours = feed.category === "金融" ? 48 : 24;
+  const cutoff = Date.now() - hours * 60 * 60 * 1000;
 
   return (Array.isArray(items) ? items : [items]).flatMap((item) => {
     if (!item || typeof item !== "object") return [];
