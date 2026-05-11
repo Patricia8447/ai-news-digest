@@ -15,86 +15,93 @@
       line-height: 1.6;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 16px 48px;
-    }
-
-    /* ── Header ── */
-    header {
-      padding: 32px 0 20px;
+    /* ── Sticky Nav ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
       border-bottom: 1px solid #e0e0e0;
-      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .header-top {
+    .navbar-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
       display: flex;
-      align-items: baseline;
-      gap: 16px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
     }
-    header h1 {
-      font-size: 1.75rem;
+    .nav-brand {
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      color: #1a1a2e;
+      margin-right: 24px;
+      white-space: nowrap;
     }
-    .date-badge {
+    .nav-brand .date-badge {
       background: #1a73e8;
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-    .header-meta {
-      margin-top: 6px;
-      font-size: 0.83rem;
-      color: #666;
-    }
-
-    /* ── Tabs ── */
-    nav.tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 24px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      vertical-align: middle;
     }
     .tab {
       cursor: pointer;
       background: none;
       border: none;
-      font-size: 1rem;
+      border-bottom: 3px solid transparent;
+      font-size: 0.95rem;
       font-family: inherit;
-      padding: 8px 20px;
-      border-radius: 6px;
-      color: #555;
+      padding: 14px 18px;
+      color: #666;
       font-weight: 500;
-      transition: background 0.15s, color 0.15s;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
     }
-    .tab:hover { background: #e8eaed; color: #111; }
-    .tab.active {
-      background: #fff;
-      color: #1a73e8;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    .tab:hover { color: #1a73e8; }
+    .tab.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; }
+
+    /* ── Page body ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+    .header-meta {
+      font-size: 0.82rem;
+      color: #888;
+      margin-bottom: 20px;
     }
 
-    /* ── Category ── */
+    /* ── Category block ── */
     .category {
       background: #fff;
       border-radius: 10px;
-      padding: 20px 24px;
+      padding: 18px 20px 20px;
       margin-bottom: 20px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-    .cat-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 16px;
+    .cat-header {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cat-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .count {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 400;
       color: #888;
       background: #f0f2f5;
@@ -102,635 +109,511 @@
       border-radius: 10px;
     }
 
-    /* ── Article ── */
-    .article {
-      padding: 14px 0;
-      border-bottom: 1px solid #f0f2f5;
+    /* ── Pagination controls ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
-    .article:last-child { border-bottom: none; padding-bottom: 0; }
-    .article:first-child { padding-top: 0; }
+    .pg-btn {
+      cursor: pointer;
+      background: #f0f2f5;
+      border: none;
+      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      transition: background 0.12s;
+    }
+    .pg-btn:hover:not(:disabled) { background: #dde1ea; }
+    .pg-btn:disabled { opacity: 0.35; cursor: default; }
+    .pg-info {
+      font-size: 0.78rem;
+      color: #666;
+      white-space: nowrap;
+    }
 
-    .article h3 {
-      font-size: 0.95rem;
+    /* ── Card pages ── */
+    .card-pages { overflow: hidden; }
+    .card-page {
+      display: none;
+      gap: 14px;
+    }
+    .card-page.active { display: flex; }
+
+    /* ── Card ── */
+    .card {
+      flex: 1;
+      min-width: 0;
+      background: #f8f9fc;
+      border: 1px solid #e8eaed;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card h3 {
+      font-size: 0.9rem;
       font-weight: 600;
       line-height: 1.45;
-      margin-bottom: 5px;
     }
-    .article h3 a {
+    .card h3 a {
       color: #1a1a2e;
       text-decoration: none;
     }
-    .article h3 a:hover { color: #1a73e8; text-decoration: underline; }
-
+    .card h3 a:hover { color: #1a73e8; text-decoration: underline; }
     .summary {
-      font-size: 0.875rem;
-      color: #444;
+      font-size: 0.83rem;
+      color: #555;
       line-height: 1.55;
-      margin-bottom: 6px;
+      flex: 1;
     }
-
     .meta-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.78rem;
+      gap: 8px;
+      font-size: 0.75rem;
+      flex-wrap: wrap;
     }
     .source {
       background: #eef2ff;
       color: #3b5bdb;
-      padding: 1px 8px;
+      padding: 1px 7px;
       border-radius: 4px;
       font-weight: 500;
     }
-    .time { color: #999; }
+    .time { color: #aaa; }
 
     /* ── Footer ── */
     footer {
       text-align: center;
       font-size: 0.78rem;
-      color: #aaa;
+      color: #bbb;
       padding-top: 32px;
     }
 
-    @media (max-width: 600px) {
-      .category { padding: 16px; }
-      header h1 { font-size: 1.4rem; }
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .card-page { flex-wrap: wrap; }
+      .card { min-width: calc(50% - 7px); flex: none; }
+    }
+    @media (max-width: 480px) {
+      .card { min-width: 100%; }
+      .navbar-inner { gap: 0; }
+      .tab { padding: 12px 12px; font-size: 0.88rem; }
     }
   </style>
 </head>
 <body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <span class="nav-brand">每日新闻<span class="date-badge">2026-05-11</span></span>
+      <button class="tab active" data-target="intl">🌍 国际</button><button class="tab" data-target="cn">🇨🇳 国内</button>
+    </div>
+  </nav>
+
   <div class="container">
-    <header>
-      <div class="header-top">
-        <h1>每日新闻</h1>
-        <span class="date-badge">2026-05-11</span>
-      </div>
-      <p class="header-meta">共 167 篇 &nbsp;·&nbsp; 更新于 2026/5/11 16:14:25</p>
-    </header>
+    <p class="header-meta">共 202 篇 &nbsp;·&nbsp; 更新于 2026/5/11 16:41:57</p>
 
-    <nav class="tabs">
-    <button class="tab active" data-target="intl">🌍 国际</button>
-    <button class="tab" data-target="cn">🇨🇳 中文</button>
-    </nav>
-
-    
-  <section id="intl">
-    <div class="category">
-      <h2 class="cat-title">📈 金融 <span class="count">10 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/world-news/ukraine-reports-russian-attacks-and-battlefield-clashes-despite-ceasefire-4675161" target="_blank" rel="noopener">Ukraine reports Russian attacks and battlefield clashes despite ceasefire</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/earnings/german-it-firm-adessos-q1-profit-jumps-58-beating-analyst-estimates-4675163" target="_blank" rel="noopener">German IT firm Adesso’s Q1 profit jumps 58%, beating analyst estimates</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/analyst-ratings/rbc-capital-initiates-arxis-stock-with-sector-perform-rating-93CH-4675162" target="_blank" rel="noopener">RBC Capital initiates Arxis stock with Sector Perform rating</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/stock-market-news/south-korea-condemns-attack-on-cargo-ship-in-strait-of-hormuz-vows-response-4675155" target="_blank" rel="noopener">South Korea condemns attack on cargo ship in Strait of Hormuz, vows response</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/company-news/lloyds-banking-seeks-bondholder-consent-to-amend-at1-securities-93CH-4675160" target="_blank" rel="noopener">Lloyds Banking seeks bondholder consent to amend AT1 securities</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/analyst-ratings/barclays-initiates-madison-air-solutions-stock-with-overweight-rating-93CH-4675156" target="_blank" rel="noopener">Barclays initiates Madison Air Solutions stock with overweight rating</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/stock-market-news/why-bofa-remains-cautious-on-intel-stock-despite-ongoing-rally-4675150" target="_blank" rel="noopener">Why BofA remains cautious on Intel stock despite ongoing rally</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/stock-market-news/ftse-100-today-stocks-rise-as-oil-surge-offsets-usiran-peace-deadlock-4675117" target="_blank" rel="noopener">FTSE 100 today: Stocks rise as oil surge offsets US-Iran peace deadlock</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.cnbc.com/2026/05/11/trump-xi-summit-beijing-global-leaders-iran-war-taiwan-strait-of-hormuz-.html" target="_blank" rel="noopener">From Singapore to Brussels, world leaders eye Trump-Xi summit from afar</a></h3>
-        <p class="summary">The world will be watching the Trump-Xi summit.</p>
-        <div class="meta-row">
-          <span class="source">CNBC Markets</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.investing.com/news/world-news/china-us-arrest-5-in-joint-drug-smuggling-investigation-xinhua-reports-4675094" target="_blank" rel="noopener">China, US arrest 5 in joint drug smuggling investigation, Xinhua reports</a></h3>
-        <p class="summary">（暂无摘要）</p>
-        <div class="meta-row">
-          <span class="source">Investing.com</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
+    <section id="intl">
+    <div class="category" id="intl-finance">
+      <div class="cat-header">
+        <span class="cat-title">📈 金融 <span class="count">10 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="intl-finance" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="intl-finance-pi">第 1 / 4 页</span>
+            <button class="pg-btn" data-catid="intl-finance" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://www.investing.com/news/commodities-news/oil-jumps-as-us-and-iran-fail-to-reach-agreement-on-peace-proposal-4674871" target="_blank" rel="noopener">Oil rises $4 after Trump rejects Iran’s response to US peace proposal</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.investing.com/news/company-news/upl-limited-recommends-rs-6-per-share-dividend-for-fy2026-93CH-4675179" target="_blank" rel="noopener">UPL Limited recommends Rs. 6 per share dividend for FY2026</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.investing.com/news/economy-news/trump-rebuffs-iran-response-to-peace-plan-oil-rises--whats-moving-markets-4675176" target="_blank" rel="noopener">Trump rebuffs Iran response to peace plan; oil rises - what’s moving markets</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.investing.com/news/stock-market-news/victrex-shares-down-on-job-cuts-profit-warning-amid-mideast-cost-fears-4675172" target="_blank" rel="noopener">Victrex shares down on job cuts, profit warning amid Mideast cost fears</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.investing.com/news/transcripts/earnings-call-transcript-academedia-q3-2026-sees-strong-growth-stock-rises-571-93CH-4675171" target="_blank" rel="noopener">Earnings call transcript: AcadeMedia Q3 2026 sees strong growth, stock rises 5.71%</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.investing.com/news/stock-market-news/how-sustainable-is-the-ai-rally-jefferies-weighs-in-4675170" target="_blank" rel="noopener">How sustainable is the AI rally? Jefferies weighs in</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.investing.com/news/world-news/trump-rejects-irans-response-to-us-peace-proposal-as-unacceptable-4674895" target="_blank" rel="noopener">Trump dismisses Iran’s reply to peace plan, oil jumps as Hormuz closure persists</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.investing.com/news/company-news/mears-executives-exercise-options-sell-shares-for-tax-93CH-4675166" target="_blank" rel="noopener">Mears executives exercise options, sell shares for tax</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.investing.com/news/company-news/cocacola-hbc-director-appointed-to-titan-board-93CH-4675165" target="_blank" rel="noopener">Coca-Cola HBC director appointed to TITAN board</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.investing.com/news/transcripts/earnings-call-transcript-5n-plus-inc-beats-q1-2026-expectations-93CH-4675164" target="_blank" rel="noopener">Earnings call transcript: 5N Plus Inc. beats Q1 2026 expectations</a></h3>
+            <p class="summary">（暂无摘要）</p>
+            <div class="meta-row">
+              <span class="source">Investing.com</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div></div>
     </div>
-    <div class="category">
-      <h2 class="cat-title">🏛️ 政治 <span class="count">10 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/cjep78l5835o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">US national on repatriation flight tests positive for hantavirus</a></h3>
-        <p class="summary">Another one of 17 Americans flown home has mild symptoms, the US health department says.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/videos/clypw107dqzo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">BBC tours England and Argentina's World Cup training grounds</a></h3>
-        <p class="summary">Will Grant tested out one of the pitches where England captain Harry Kane and his team will train in Kansas City.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/c8r8e2ne1v6o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Modi urges Indians to work from home and limit foreign travel as Iran war continues</a></h3>
-        <p class="summary">He said the austerity measures would reduce India's fuel use and help save foreign exchange.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/11/g-s1-121363/remains-of-missing-us-soldier" target="_blank" rel="noopener">Remains of US soldier who went missing in Morocco have been recovered</a></h3>
-        <p class="summary">The remains of a U.S. soldier who went missing during military drills in Morocco were recovered in the Atlantic Ocean, the army said. Military teams are searching for a second missing soldier.</p>
-        <div class="meta-row">
-          <span class="source">NPR World</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/c3rz75rgn8zo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Trump and Xi are set to meet. Where do US-China tariffs stand?</a></h3>
-        <p class="summary">The first US presidential visit to China in almost 10 years will test a fragile tariff truce.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">2 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/c99l1590kr0o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Thailand's divisive ex-PM is out of jail, but is the Thaksin era over?</a></h3>
-        <p class="summary">Thaksin seems incapable of taking a back seat. This time, it really could be different.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">4 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/c3r2p70jdy7o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">French national shows symptoms on return from hantavirus-hit ship</a></h3>
-        <p class="summary">Five passengers of the MV Hondius will be quarantined in Paris &quot;until further notice&quot;, France's prime minister says.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">4 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/ce9pvp210zdo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Dua Lipa sues Samsung for $15m over use of her image on TV boxes</a></h3>
-        <p class="summary">The pop star's legal team alleges a photograph of her face was used on Samsung television boxes without permission.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">5 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.bbc.com/news/articles/clypgz9e5pmo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Trump calls Iran response to US proposal to end war 'totally unacceptable'</a></h3>
-        <p class="summary">Iran is reported to want lifting of the US naval blockade, recognition of Iranian sovereignty over the Strait of Hormuz and compensation for war damage.</p>
-        <div class="meta-row">
-          <span class="source">BBC World</span>
-          <span class="time">6 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817578/hantavirus-cruise-ship-nebraska-us-passengers" target="_blank" rel="noopener">U.S. cruise passengers fly back for hantavirus monitoring, as one tests positive</a></h3>
-        <p class="summary">Passengers are returning to their home countries after weeks on the ship at the center of a hantavirus outbreak. Most of the Americans aboard are headed for Nebraska to be evaluated by health officials.</p>
-        <div class="meta-row">
-          <span class="source">NPR World</span>
-          <span class="time">6 小时前</span>
-        </div>
-      </article>
+    <div class="category" id="intl-politics">
+      <div class="cat-header">
+        <span class="cat-title">🏛️ 政治 <span class="count">6 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="intl-politics" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="intl-politics-pi">第 1 / 2 页</span>
+            <button class="pg-btn" data-catid="intl-politics" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://www.bbc.com/news/articles/cjep78l5835o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">US and French nationals test positive for hantavirus after leaving ship</a></h3>
+            <p class="summary">The American national has arrived in Nebraska, while a French woman is isolating in Paris.</p>
+            <div class="meta-row">
+              <span class="source">BBC World</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.bbc.com/news/videos/clypw107dqzo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">BBC tours England and Argentina's World Cup training grounds</a></h3>
+            <p class="summary">Will Grant tested out one of the pitches where England captain Harry Kane and his team will train in Kansas City.</p>
+            <div class="meta-row">
+              <span class="source">BBC World</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.bbc.com/news/articles/c8r8e2ne1v6o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Modi urges Indians to work from home and limit foreign travel as Iran war continues</a></h3>
+            <p class="summary">He said the austerity measures would reduce India's fuel use and help save foreign exchange.</p>
+            <div class="meta-row">
+              <span class="source">BBC World</span>
+              <span class="time">1 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/11/g-s1-121363/remains-of-missing-us-soldier" target="_blank" rel="noopener">Remains of US soldier who went missing in Morocco have been recovered</a></h3>
+            <p class="summary">The remains of a U.S. soldier who went missing during military drills in Morocco were recovered in the Atlantic Ocean, the army said. Military teams are searching for a second missing soldier.</p>
+            <div class="meta-row">
+              <span class="source">NPR World</span>
+              <span class="time">2 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.bbc.com/news/articles/c3rz75rgn8zo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Trump and Xi are set to meet. Where do US-China tariffs stand?</a></h3>
+            <p class="summary">The first US presidential visit to China in almost 10 years will test a fragile tariff truce.</p>
+            <div class="meta-row">
+              <span class="source">BBC World</span>
+              <span class="time">3 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.bbc.com/news/articles/c99l1590kr0o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Thailand's divisive ex-PM is out of jail, but is the Thaksin era over?</a></h3>
+            <p class="summary">Thaksin seems incapable of taking a back seat. This time, it really could be different.</p>
+            <div class="meta-row">
+              <span class="source">BBC World</span>
+              <span class="time">5 小时前</span>
+            </div>
+          </div></div></div>
     </div>
-    <div class="category">
-      <h2 class="cat-title">🌐 社会 <span class="count">10 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/11/g-s1-121363/remains-of-missing-us-soldier" target="_blank" rel="noopener">Remains of US soldier who went missing in Morocco have been recovered</a></h3>
-        <p class="summary">The remains of a U.S. soldier who went missing during military drills in Morocco were recovered in the Atlantic Ocean, the army said. Military teams are searching for a second missing soldier.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817578/hantavirus-cruise-ship-nebraska-us-passengers" target="_blank" rel="noopener">U.S. cruise passengers fly back for hantavirus monitoring, as one tests positive</a></h3>
-        <p class="summary">Passengers are returning to their home countries after weeks on the ship at the center of a hantavirus outbreak. Most of the Americans aboard are headed for Nebraska to be evaluated by health officials.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">6 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817496/israeli-settlers-palestinian-exhume-grave-west-bank-jenin" target="_blank" rel="noopener">Israeli settlers force Palestinian family to exhume and rebury their father</a></h3>
-        <p class="summary">The relatives of Hussein Asasa described to NPR how they were forced to exhume and rebury their father when Israeli settlers interfered with his grave.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">8 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817605/trump-rejects-iran-ceasefire-proposal" target="_blank" rel="noopener">Trump rejects Iran's latest response to U.S. ceasefire proposal</a></h3>
-        <p class="summary">Iran delivered its response to Pakistani mediators on Sunday, according to the state-run Islamic Republic News Agency.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">9 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/g-s1-120911/chocolate-certified-cacao-standards-evaluate-coffee-wine" target="_blank" rel="noopener">A chocolate laboratory in Italy will be good for chocolate eaters — and farmers</a></h3>
-        <p class="summary">The chocolate biz is raising the bar with a lab to assess cacao beans from around the world. (Talk about a sweet gig!) Consumers and farmers stand to benefit from the &quot;Standard of Excellence&quot; program.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">18 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817491/uk-elections-keir-starmer-resign-reform-green" target="_blank" rel="noopener">Keir Starmer's party lost big in U.K. local elections. Here's what comes next</a></h3>
-        <p class="summary">U.K. Prime Minister Keir Starmer's Labour party suffered major losses in local elections held across Britain last week. So far, Starmer has rejected calls for his resignation.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">19 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5810635/temple-israel-rebuilds-after-terror-attack" target="_blank" rel="noopener">Temple Israel rebuilds after terror attack</a></h3>
-        <p class="summary">Two months ago, a gunman drove through the preschool at Temple Israel, the largest synagogue in Michigan. Every child and teacher survived, but the community is still displaced and navigating the trauma of the attack.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">20 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/g-s1-121099/mothers-day-mother-kindness-strangers" target="_blank" rel="noopener">Happy Mother's Day to the kindest mom. P.S. Your kindness annoyed me when I was a kid</a></h3>
-        <p class="summary">She and her siblings had to make tea for and share food with every visitor. That did not make her happy. Today she has a different perspective. So she finally asked her mom: What made you so kind?</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">20 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5813510/lord-of-the-flies-netflix" target="_blank" rel="noopener">Of course we look for ourselves in art — but if we stop there, we're missing out</a></h3>
-        <p class="summary">As I watched the new series, I only cared about Piggy — the thoughtful, smart kid stranded on an island with other boys. That made me think about what we look for in art.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">21 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5779279/gleevec-leukemia-cancer-treatment" target="_blank" rel="noopener">How a pill approved 25 years ago transformed cancer treatment</a></h3>
-        <p class="summary">When the Food and Drug Administration approved Gleevec to treat a form of leukemia in 2001, it ushered in a new era in cancer care.</p>
-        <div class="meta-row">
-          <span class="source">NPR</span>
-          <span class="time">21 小时前</span>
-        </div>
-      </article>
+    <div class="category" id="intl-social">
+      <div class="cat-header">
+        <span class="cat-title">🌐 社会 <span class="count">6 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="intl-social" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="intl-social-pi">第 1 / 2 页</span>
+            <button class="pg-btn" data-catid="intl-social" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/11/g-s1-121363/remains-of-missing-us-soldier" target="_blank" rel="noopener">Remains of US soldier who went missing in Morocco have been recovered</a></h3>
+            <p class="summary">The remains of a U.S. soldier who went missing during military drills in Morocco were recovered in the Atlantic Ocean, the army said. Military teams are searching for a second missing soldier.</p>
+            <div class="meta-row">
+              <span class="source">NPR</span>
+              <span class="time">2 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817578/hantavirus-cruise-ship-nebraska-us-passengers" target="_blank" rel="noopener">U.S. cruise passengers fly back for hantavirus monitoring, as one tests positive</a></h3>
+            <p class="summary">Passengers are returning to their home countries after weeks on the ship at the center of a hantavirus outbreak. Most of the Americans aboard are headed for Nebraska to be evaluated by health officials.</p>
+            <div class="meta-row">
+              <span class="source">NPR</span>
+              <span class="time">6 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817496/israeli-settlers-palestinian-exhume-grave-west-bank-jenin" target="_blank" rel="noopener">Israeli settlers force Palestinian family to exhume and rebury their father</a></h3>
+            <p class="summary">The relatives of Hussein Asasa described to NPR how they were forced to exhume and rebury their father when Israeli settlers interfered with his grave.</p>
+            <div class="meta-row">
+              <span class="source">NPR</span>
+              <span class="time">9 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817605/trump-rejects-iran-ceasefire-proposal" target="_blank" rel="noopener">Trump rejects Iran's latest response to U.S. ceasefire proposal</a></h3>
+            <p class="summary">Iran delivered its response to Pakistani mediators on Sunday, according to the state-run Islamic Republic News Agency.</p>
+            <div class="meta-row">
+              <span class="source">NPR</span>
+              <span class="time">10 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/10/g-s1-120911/chocolate-certified-cacao-standards-evaluate-coffee-wine" target="_blank" rel="noopener">A chocolate laboratory in Italy will be good for chocolate eaters — and farmers</a></h3>
+            <p class="summary">The chocolate biz is raising the bar with a lab to assess cacao beans from around the world. (Talk about a sweet gig!) Consumers and farmers stand to benefit from the &quot;Standard of Excellence&quot; program.</p>
+            <div class="meta-row">
+              <span class="source">NPR</span>
+              <span class="time">18 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.npr.org/2026/05/10/nx-s1-5817491/uk-elections-keir-starmer-resign-reform-green" target="_blank" rel="noopener">Keir Starmer's party lost big in U.K. local elections. Here's what comes next</a></h3>
+            <p class="summary">U.K. Prime Minister Keir Starmer's Labour party suffered major losses in local elections held across Britain last week. So far, Starmer has rejected calls for his resignation.</p>
+            <div class="meta-row">
+              <span class="source">NPR</span>
+              <span class="time">20 小时前</span>
+            </div>
+          </div></div></div>
     </div>
-    <div class="category">
-      <h2 class="cat-title">🎬 娱乐 <span class="count">10 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://variety.com/2026/film/global/masha-and-the-bear-oleg-kuzovkov-first-feature-film-1236743974/" target="_blank" rel="noopener">&amp;#8216;Masha and the Bear&amp;#8217; Movie to Be Produced by Creator of YouTube Record-Breaking Series (EXCLUSIVE)</a></h3>
-        <p class="summary">Oleg Kuzovkov, the creator of hit 3D animated show “Masha and the Bear,” is to produce the first original feature film based on the record-breaking property. The show is incredibly popular on YouTube and one of its episodes is the most-watched non-music video on the platform: the episode titled &amp;#8220;Masha and the Bear: Recipe for [&amp;#8230;]</p>
-        <div class="meta-row">
-          <span class="source">Variety</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.hollywoodreporter.com/movies/movie-news/cannes-directors-fortnight-2026-gabin-film-doc-interview-1236578915/" target="_blank" rel="noopener">In Cannes Doc &amp;#8216;Gabin,&amp;#8217; Filmed Over a Decade, a Boy Is Caught Between His Family’s Farm Life and His Own Dreams</a></h3>
-        <p class="summary">Maxence Voiseux's feature debut, world premiering in Cannes' Directors' Fortnight, follows the titular young man in northern France from age 8 to 18.</p>
-        <div class="meta-row">
-          <span class="source">Hollywood Reporter</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.rollingstone.com/music/music-news/the-beatles-fan-experience-3-savile-row-london-2027-1235560415/" target="_blank" rel="noopener">The Beatles Fan Experience To Open at London&amp;#8217;s Historic 3 Savile Row</a></h3>
-        <p class="summary">The Mayfair building was home to the studio where Let It Be was recorded and the site of the band's final concert</p>
-        <div class="meta-row">
-          <span class="source">Rolling Stone</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://variety.com/2026/film/global/bloody-tennis-horror-cannes-1236741937/" target="_blank" rel="noopener">&amp;#8216;Bloody Tennis&amp;#8217; Director on What His Horror Film Says About Society: &amp;#8216;Ruthlessness Is Rewarded, Not Compassion&amp;#8217; (EXCLUSIVE)</a></h3>
-        <p class="summary">At the Cannes Market on Wednesday, sales agency The Playmaker we will be hosting a private screening of Nikias Chryssos’ horror film “Bloody Tennis.” Variety spoke to the German director about his debut English-language movie, which stars Sandra Guldberg Kampp (“Foundation”), seen in the first-look image from the film, above, and Golden Globe nominee Helena [&amp;#8230;]</p>
-        <div class="meta-row">
-          <span class="source">Variety</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://variety.com/2026/film/markets-festivals/melissa-leo-starring-serial-killer-thriller-mannequin-dangerous-animals-sean-byrne-1236744371/" target="_blank" rel="noopener">Melissa Leo Starring in Serial Killer Procedural &amp;#8216;The Mannequin&amp;#8217; From &amp;#8216;Dangerous Animals&amp;#8217; Filmmaker Sean Byrne</a></h3>
-        <p class="summary">Melissa Leo, the Oscar-winning star of &amp;#8220;The Fighter,&amp;#8221; will appear in &amp;#8220;The Mannequin,&amp;#8221; a serial killer procedural from Sean Byrne, the twisted auteur behind &amp;#8220;Dangerous Animals.&amp;#8221; Studiocanal’s new genre label Sixth Dimension is backing the film and will launch worldwide sales at Cannes. It will release the picture in the U.K., France, Germany, Benelux, Poland, [&amp;#</p>
-        <div class="meta-row">
-          <span class="source">Variety</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.hollywoodreporter.com/movies/movie-news/studiocanal-genre-label-sixth-dimension-sean-byrne-film-1236591837/" target="_blank" rel="noopener">Melissa Leo to Star in Sean Byrne&amp;#8217;s &amp;#8216;The Mannequin&amp;#8217; for Studiocanal Genre Label Sixth Dimension</a></h3>
-        <p class="summary">The Academy Award winner will topline the “serial killer procedural” that is being described as an “original, violent and blistering high-stakes thriller” being introduced to buyers in Cannes this week.</p>
-        <div class="meta-row">
-          <span class="source">Hollywood Reporter</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://variety.com/2026/film/global/kelvin-harrison-jr-golden-globes-prize-for-documentary-1236742223/" target="_blank" rel="noopener">Kelvin Harrison Jr. Joins Jury, Will Present Golden Globes Prize for Documentary in Cannes</a></h3>
-        <p class="summary">Actor-producer Kelvin Harrison Jr. will join the jury and present the Golden Globes Prize for Documentary in Partnership With Artemis Rising Foundation during the 79th edition of the Cannes Film Festival. Harrison Jr. shared a SAG Award with the cast of &amp;#8220;The Trial of the Chicago 7.&amp;#8221; His recent and upcoming work includes voicing Taka [&amp;#8230;]</p>
-        <div class="meta-row">
-          <span class="source">Variety</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.hollywoodreporter.com/movies/movie-news/cannes-golden-globes-doc-prize-impact-kelvin-harrison-jr-1236590653/" target="_blank" rel="noopener">Cannes: Kelvin Harrison Jr. to Present Golden Globes Doc Prize for Impactful Storytelling</a></h3>
-        <p class="summary">Returning for its second year, the honor is handed out in partnership with the Artemis Rising Foundation.</p>
-        <div class="meta-row">
-          <span class="source">Hollywood Reporter</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.rollingstone.com/tv-movies/tv-movie-news/savannah-guthrie-mothers-day-tribute-nancy-guthrie-1235560407/" target="_blank" rel="noopener">Savannah Guthrie Shares Mother&amp;#8217;s Day Tribute to Missing Mom Nancy: &amp;#8216;We Miss You With Every Breath&amp;#8217;</a></h3>
-        <p class="summary">The Today Show anchor's mother disappeared from her home on Feb. 1 under suspicious circumstances</p>
-        <div class="meta-row">
-          <span class="source">Rolling Stone</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://variety.com/2026/film/box-office/china-box-office-dear-you-leads-mortal-kombat-2-1236744345/" target="_blank" rel="noopener">China Box Office: ‘Dear You’ Leads Post-Holiday Frame as ‘Mortal Kombat II’ Debuts</a></h3>
-        <p class="summary">Jinant Film &amp;#38; TV’s family drama “Dear You” ascended to the top spot at the China box office during the May 8–10 weekend, earning RMB62.6 million ($9.2 million), according to data from Artisan Gateway. Released on April 30 as part of the May Day holiday slate, the film has now reached a cumulative total of [&amp;#8230;]</p>
-        <div class="meta-row">
-          <span class="source">Variety</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
+    <div class="category" id="intl-entertainment">
+      <div class="cat-header">
+        <span class="cat-title">🎬 娱乐 <span class="count">6 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="intl-entertainment" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="intl-entertainment-pi">第 1 / 2 页</span>
+            <button class="pg-btn" data-catid="intl-entertainment" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://variety.com/2026/film/global/sola-media-felix-the-brave-cannes-1236743928/" target="_blank" rel="noopener">Sola Media Boards Animated Feature &amp;#8216;Felix the Brave,&amp;#8217; Unveils Teaser at Cannes (EXCLUSIVE)</a></h3>
+            <p class="summary">Sola Media has boarded as the sales agent for animated feature “Felix the Brave,” and will be unveiling an exclusive teaser at the Cannes Film Market. The film, which follows the adventures of a flea, is produced by Little Dream Entertainment and Amour Fou together with animation studio Red Parrot Studios. It is directed by [&amp;#8230;]</p>
+            <div class="meta-row">
+              <span class="source">Variety</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://variety.com/2026/film/global/masha-and-the-bear-oleg-kuzovkov-first-feature-film-1236743974/" target="_blank" rel="noopener">&amp;#8216;Masha and the Bear&amp;#8217; Movie to Be Produced by Creator of YouTube Record-Breaking Series (EXCLUSIVE)</a></h3>
+            <p class="summary">Oleg Kuzovkov, the creator of hit 3D animated show “Masha and the Bear,” is to produce the first original feature film based on the record-breaking property. The show is incredibly popular on YouTube and one of its episodes is the most-watched non-music video on the platform: the episode titled &amp;#8220;Masha and the Bear: Recipe for [&amp;#8230;]</p>
+            <div class="meta-row">
+              <span class="source">Variety</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.hollywoodreporter.com/movies/movie-news/cannes-directors-fortnight-2026-gabin-film-doc-interview-1236578915/" target="_blank" rel="noopener">In Cannes Doc &amp;#8216;Gabin,&amp;#8217; Filmed Over a Decade, a Boy Is Caught Between His Family’s Farm Life and His Own Dreams</a></h3>
+            <p class="summary">Maxence Voiseux's feature debut, world premiering in Cannes' Directors' Fortnight, follows the titular young man in northern France from age 8 to 18.</p>
+            <div class="meta-row">
+              <span class="source">Hollywood Reporter</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.rollingstone.com/music/music-news/the-beatles-fan-experience-3-savile-row-london-2027-1235560415/" target="_blank" rel="noopener">The Beatles Fan Experience To Open at London&amp;#8217;s Historic 3 Savile Row</a></h3>
+            <p class="summary">The Mayfair building was home to the studio where Let It Be was recorded and the site of the band's final concert</p>
+            <div class="meta-row">
+              <span class="source">Rolling Stone</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://variety.com/2026/film/global/bloody-tennis-horror-cannes-1236741937/" target="_blank" rel="noopener">&amp;#8216;Bloody Tennis&amp;#8217; Director on What His Horror Film Says About Society: &amp;#8216;Ruthlessness Is Rewarded, Not Compassion&amp;#8217; (EXCLUSIVE)</a></h3>
+            <p class="summary">At the Cannes Market on Wednesday, sales agency The Playmaker we will be hosting a private screening of Nikias Chryssos’ horror film “Bloody Tennis.” Variety spoke to the German director about his debut English-language movie, which stars Sandra Guldberg Kampp (“Foundation”), seen in the first-look image from the film, above, and Golden Globe nominee Helena [&amp;#8230;]</p>
+            <div class="meta-row">
+              <span class="source">Variety</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://variety.com/2026/film/markets-festivals/melissa-leo-starring-serial-killer-thriller-mannequin-dangerous-animals-sean-byrne-1236744371/" target="_blank" rel="noopener">Melissa Leo Starring in Serial Killer Procedural &amp;#8216;The Mannequin&amp;#8217; From &amp;#8216;Dangerous Animals&amp;#8217; Filmmaker Sean Byrne</a></h3>
+            <p class="summary">Melissa Leo, the Oscar-winning star of &amp;#8220;The Fighter,&amp;#8221; will appear in &amp;#8220;The Mannequin,&amp;#8221; a serial killer procedural from Sean Byrne, the twisted auteur behind &amp;#8220;Dangerous Animals.&amp;#8221; Studiocanal’s new genre label Sixth Dimension is backing the film and will launch worldwide sales at Cannes. It will release the picture in the U.K., France, Germany, Benelux, Poland, [&amp;#</p>
+            <div class="meta-row">
+              <span class="source">Variety</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div></div>
     </div>
-  </section>
-  <section id="cn" hidden>
-    <div class="category">
-      <h2 class="cat-title">📈 金融 <span class="count">5 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://www.ftchinese.com/story/001109674" target="_blank" rel="noopener">特朗普将在“习特会”上就伊朗问题对中国施压</a></h3>
-        <p class="summary">美国官员称，特朗普将重提中国支持伊朗和俄罗斯问题，包括向这两国提供军民两用零部件以及可能的武器出口。</p>
-        <div class="meta-row">
-          <span class="source">FT中文</span>
-          <span class="time">16 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.ftchinese.com/story/001109672" target="_blank" rel="noopener">斯塔默聘请前首相布朗担任“全球金融特使”</a></h3>
-        <p class="summary">执政党工党在地方选举中惨败，工党首相斯塔默受到指责。延揽75岁的布朗意在向士气低落的工党表明，他决心掌控局面。</p>
-        <div class="meta-row">
-          <span class="source">FT中文</span>
-          <span class="time">16 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.ftchinese.com/story/001109671" target="_blank" rel="noopener">德国再度争取购买美国战斧导弹</a></h3>
-        <p class="summary">德国总理批评特朗普对伊朗开战后，五角大楼取消将一个美军远程火力营部署到德国的计划，使欧洲针对俄罗斯的威慑出现一个缺口。</p>
-        <div class="meta-row">
-          <span class="source">FT中文</span>
-          <span class="time">16 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.ftchinese.com/story/001109670" target="_blank" rel="noopener">沙特阿美首季盈利增长</a></h3>
-        <p class="summary">横贯阿拉伯半岛的东-西输油管道使该公司得以从红海港口发运石油，减少了对霍尔木兹海峡的依赖。该公司还受益于油价上涨。</p>
-        <div class="meta-row">
-          <span class="source">FT中文</span>
-          <span class="time">16 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.ftchinese.com/story/001109669" target="_blank" rel="noopener">特朗普关税已对欧洲汽车制造商造成80亿欧元打击</a></h3>
-        <p class="summary">该数字基于大众、宝马、梅赛德斯-奔驰、斯泰兰蒂斯和沃尔沃汽车高管的公开声明。欧洲汽车制造业正准备迎接特朗普再度升级对欧贸易战。</p>
-        <div class="meta-row">
-          <span class="source">FT中文</span>
-          <span class="time">16 小时前</span>
-        </div>
-      </article>
+  </section><section id="cn" hidden>
+    <div class="category" id="cn-finance">
+      <div class="cat-header">
+        <span class="cat-title">📈 金融 <span class="count">5 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="cn-finance" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="cn-finance-pi">第 1 / 2 页</span>
+            <button class="pg-btn" data-catid="cn-finance" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://www.ftchinese.com/story/001109674" target="_blank" rel="noopener">特朗普将在“习特会”上就伊朗问题对中国施压</a></h3>
+            <p class="summary">美国官员称，特朗普将重提中国支持伊朗和俄罗斯问题，包括向这两国提供军民两用零部件以及可能的武器出口。</p>
+            <div class="meta-row">
+              <span class="source">FT中文</span>
+              <span class="time">16 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.ftchinese.com/story/001109672" target="_blank" rel="noopener">斯塔默聘请前首相布朗担任“全球金融特使”</a></h3>
+            <p class="summary">执政党工党在地方选举中惨败，工党首相斯塔默受到指责。延揽75岁的布朗意在向士气低落的工党表明，他决心掌控局面。</p>
+            <div class="meta-row">
+              <span class="source">FT中文</span>
+              <span class="time">16 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.ftchinese.com/story/001109671" target="_blank" rel="noopener">德国再度争取购买美国战斧导弹</a></h3>
+            <p class="summary">德国总理批评特朗普对伊朗开战后，五角大楼取消将一个美军远程火力营部署到德国的计划，使欧洲针对俄罗斯的威慑出现一个缺口。</p>
+            <div class="meta-row">
+              <span class="source">FT中文</span>
+              <span class="time">16 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.ftchinese.com/story/001109670" target="_blank" rel="noopener">沙特阿美首季盈利增长</a></h3>
+            <p class="summary">横贯阿拉伯半岛的东-西输油管道使该公司得以从红海港口发运石油，减少了对霍尔木兹海峡的依赖。该公司还受益于油价上涨。</p>
+            <div class="meta-row">
+              <span class="source">FT中文</span>
+              <span class="time">16 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.ftchinese.com/story/001109669" target="_blank" rel="noopener">特朗普关税已对欧洲汽车制造商造成80亿欧元打击</a></h3>
+            <p class="summary">该数字基于大众、宝马、梅赛德斯-奔驰、斯泰兰蒂斯和沃尔沃汽车高管的公开声明。欧洲汽车制造业正准备迎接特朗普再度升级对欧贸易战。</p>
+            <div class="meta-row">
+              <span class="source">FT中文</span>
+              <span class="time">16 小时前</span>
+            </div>
+          </div></div></div>
     </div>
-    <div class="category">
-      <h2 class="cat-title">🏛️ 政治 <span class="count">10 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353101/why-chinas-new-duty-free-access-lifeline-south-african-exporters?utm_source=rss_feed" target="_blank" rel="noopener">Why China’s new duty-free access is a lifeline for South African exporters</a></h3>
-        <p class="summary">History was made this Labour Day, as China’s southern Shenzhen Bay port cleared 24 tonnes of South African apples and central Hunan province processed 6,000 bottles of South African wine – the first time these goods had reached the Asian economic giant under a new zero-tariff arrangement. The duty-free access for African partners from May 1, which saw the 10 per cent tariff rate for apples removed</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/asia/southeast-asia/article/3353127/philippine-parliament-prepares-vote-sara-dutertes-impeachment-bid?utm_source=rss_feed" target="_blank" rel="noopener">Philippine parliament prepares to vote on Sara Duterte’s impeachment bid</a></h3>
-        <p class="summary">Lawmakers in the Philippines are set to vote on Monday on whether to impeach Vice-President Sara Duterte-Carpio, in what could create a major hurdle for her bid to run for the presidency in 2028. A house justice committee last month found probable cause for her impeachment in ‌a petition from activists accusing her of misusing public funds, accumulating unexplained wealth and of threatening the li</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/hong-kong/society/article/3353126/hong-kong-have-privately-run-care-services-under-new-scheme-middle-class-elderly?utm_source=rss_feed" target="_blank" rel="noopener">Hong Kong to have privately run care services under new scheme for middle class elderly</a></h3>
-        <p class="summary">Hong Kong authorities will experiment leasing government-built elderly care facilities to the private sector, with the pilot programme aiming to provide more diverse services targeting middle class senior residents. Labour and Welfare Bureau officials said in a Legislative Council panel meeting on Monday that the government would roll out a “publicly built, privately run” model to provide “more di</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/tech/big-tech/article/3353081/china-ranks-third-global-index-ai-competitiveness-life-sciences?utm_source=rss_feed" target="_blank" rel="noopener">China ranks third in global index for AI competitiveness in life sciences</a></h3>
-        <p class="summary">China ranked third in a new global index measuring competitiveness in AI for biotechnology, healthcare and longevity, as the race to apply AI moves from chatbots and general-purpose models into regulated, data-heavy industries such as drug discovery, diagnostics and preventive medicine. The latest edition of the Global AI Competitiveness Index, released on Monday by Deep Knowledge Group, a consort</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3353119/weeknd-stage-2-hong-kong-concerts-october-kai-tak-stadium?utm_source=rss_feed" target="_blank" rel="noopener">The Weeknd to stage 2 Hong Kong concerts in October at Kai Tak Stadium</a></h3>
-        <p class="summary">Canadian singer-songwriter The Weeknd will perform two concerts at Hong Kong’s Kai Tak Stadium in October as part of the final leg of his “After Hours Til Dawn” world tour, confirming an earlier report by the South China Morning Post. The announcement coincides with K-pop act Babymonster’s Monday reveal that the girl group would perform in the city on January 9 next year at AsiaWorld-Arena, formin</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/hong-kong/transport/article/3353118/calls-20500-ride-hailing-permits-keep-15000-cars-hong-kong-roads-daily?utm_source=rss_feed" target="_blank" rel="noopener">Calls for 20,500 ride-hailing permits to keep 15,000 cars on Hong Kong roads daily</a></h3>
-        <p class="summary">Hong Kong authorities should issue about 20,500 licences in the first phase of regulating ride-hailing platforms, lawmakers and experts have said, arguing that the city needs at least 15,000 active cars daily to meet existing demand and avoid worsening transport shortages. The proposal came as several lawmakers told the South China Morning Post, on condition of anonymity, that the government had r</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/asia/east-asia/article/3353114/japans-late-night-cafes-open-doors-help-mothers-crying-babies?utm_source=rss_feed" target="_blank" rel="noopener">Japan’s late-night cafes open doors to soothe mothers of crying babies</a></h3>
-        <p class="summary">A growing number of late-night cafes across Japan are opening their doors to mothers struggling with babies who will not stop crying, offering a rare refuge during the most isolating hours of parenting. The idea of a “nighttime crying cafe”, which appeared in an online comic nearly a decade ago, first resonated with readers and is now gaining real-world traction as spaces inspired by that vision a</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/hong-kong/society/article/3353113/hong-kong-lawmakers-urge-rethink-housing-development-policy-elderly?utm_source=rss_feed" target="_blank" rel="noopener">Hong Kong lawmakers urge rethink of housing development policy for elderly</a></h3>
-        <p class="summary">Hong Kong lawmakers have called for a rethink of a government scheme to develop homes for the elderly, days after the city’s second largest public housing provider revealed it would stop building homes targeting senior residents for the coming 10 years. Lawmaker Andrew Lam Siu-lo of the Legislative Council’s housing panel said on Monday that the government had not been proactive enough in formulat</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/hong-kong/health-environment/article/3353111/hong-kong-leverages-unrivalled-medical-hub-status-amid-global-hantavirus-alarm?utm_source=rss_feed" target="_blank" rel="noopener">Hong Kong leverages ‘unrivalled’ medical hub status amid global hantavirus alarm</a></h3>
-        <p class="summary">Hong Kong will serve as a global partner in pandemic preparedness, leveraging its “unrivalled” status as a medical innovation hub to combat emerging health threats such as a recent hantavirus outbreak on a cruise ship, the city’s leader and health chief have said. Speaking at the Asia Summit on Global Health on Monday, Chief Executive John Lee Ka-chiu underscored the city’s commitment and strategi</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/asia/east-asia/article/3353109/robots-rescue-south-korea-looks-ai-solutions-dwindling-army-numbers?utm_source=rss_feed" target="_blank" rel="noopener">Robots to the rescue? South Korea looks for AI solutions to dwindling army numbers</a></h3>
-        <p class="summary">South Korea’s military is exploring a strategic partnership with Hyundai Motor to potentially deploy robotics to the front lines as Seoul accelerates investment in AI-powered, unmanned systems to tackle a deepening troop shortage. The defence ministry said it was discussing cooperation with Hyundai as part of efforts to respond to changes in the battlefield environment and develop a “hi-tech, scie</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">2 小时前</span>
-        </div>
-      </article>
+    <div class="category" id="cn-politics">
+      <div class="cat-header">
+        <span class="cat-title">🏛️ 政治 <span class="count">6 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="cn-politics" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="cn-politics-pi">第 1 / 2 页</span>
+            <button class="pg-btn" data-catid="cn-politics" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://www.scmp.com/opinion/hong-kong-opinion/article/3353092/hong-kongs-property-recovery-could-be-more-robust-many-think?utm_source=rss_feed" target="_blank" rel="noopener">Hong Kong’s property recovery could be more robust than many think</a></h3>
+            <p class="summary">A wave of bullishness is sweeping through Hong Kong’s real estate market. A report by S&amp;P Global Ratings on May 5 said an “upside surprise” could materialise. One of the catalysts for a stronger-than-expected recovery was evidence of more competitive bids at residential land auctions in recent months. S&amp;P said, “Hong Kong has become the first major city in China whose property market has bottomed.</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/week-asia/economics/article/3353135/malaysia-ex-proton-ceos-self-reliance-sermon-spurs-backlash-spare-us?utm_source=rss_feed" target="_blank" rel="noopener">In Malaysia, ex-Proton CEO’s self-reliance sermon spurs backlash: ‘spare us’</a></h3>
+            <p class="summary">A call from the former CEO of Proton for Malays to abandon a “mentality of waiting for aid” has been met with ridicule online, with social media users pointing to the national carmaker’s own long history of government support. Speaking on Sunday at the inaugural Musyawarah Nasional (National Discourse) dialogue platform founded by Deputy Prime Minister Ahmad Zahid Hamidi, Syed Zainal Abidin Syed T</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353101/why-chinas-new-duty-free-access-lifeline-south-african-exporters?utm_source=rss_feed" target="_blank" rel="noopener">Why China’s new duty-free access is a lifeline for South African exporters</a></h3>
+            <p class="summary">History was made this Labour Day, as China’s southern Shenzhen Bay port cleared 24 tonnes of South African apples and central Hunan province processed 6,000 bottles of South African wine – the first time these goods had reached the Asian economic giant under a new zero-tariff arrangement. The duty-free access for African partners from May 1, which saw the 10 per cent tariff rate for apples removed</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.scmp.com/news/asia/southeast-asia/article/3353127/philippine-parliament-prepares-vote-sara-dutertes-impeachment-bid?utm_source=rss_feed" target="_blank" rel="noopener">Philippine parliament prepares to vote on Sara Duterte’s impeachment bid</a></h3>
+            <p class="summary">Lawmakers in the Philippines are set to vote on Monday on whether to impeach Vice-President Sara Duterte-Carpio, in what could create a major hurdle for her bid to run for the presidency in 2028. A house justice committee last month found probable cause for her impeachment in ‌a petition from activists accusing her of misusing public funds, accumulating unexplained wealth and of threatening the li</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/news/hong-kong/society/article/3353126/hong-kong-have-privately-run-care-services-under-new-scheme-middle-class-elderly?utm_source=rss_feed" target="_blank" rel="noopener">Hong Kong to have privately run care services under new scheme for middle-class elderly</a></h3>
+            <p class="summary">Hong Kong authorities will experiment leasing government-built elderly care facilities to the private sector, with the pilot programme aiming to provide more diverse services targeting middle-class senior residents. Labour and Welfare Bureau officials said in a Legislative Council panel meeting on Monday that the government would roll out a “publicly built, privately run” model to provide “more di</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/tech/big-tech/article/3353081/china-ranks-third-global-index-ai-competitiveness-life-sciences?utm_source=rss_feed" target="_blank" rel="noopener">China ranks third in global index for AI competitiveness in life sciences</a></h3>
+            <p class="summary">China ranked third in a new global index measuring competitiveness in AI for biotechnology, healthcare and longevity, as the race to apply AI moves from chatbots and general-purpose models into regulated, data-heavy industries such as drug discovery, diagnostics and preventive medicine. The latest edition of the Global AI Competitiveness Index, released on Monday by Deep Knowledge Group, a consort</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">1 小时前</span>
+            </div>
+          </div></div></div>
     </div>
-    <div class="category">
-      <h2 class="cat-title">🌐 社会 <span class="count">10 篇</span></h2>
-      <div class="articles">
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353101/why-chinas-new-duty-free-access-lifeline-south-african-exporters?utm_source=rss_feed" target="_blank" rel="noopener">Why China’s new duty-free access is a lifeline for South African exporters</a></h3>
-        <p class="summary">History was made this Labour Day, as China’s southern Shenzhen Bay port cleared 24 tonnes of South African apples and central Hunan province processed 6,000 bottles of South African wine – the first time these goods had reached the Asian economic giant under a new zero-tariff arrangement. The duty-free access for African partners from May 1, which saw the 10 per cent tariff rate for apples removed</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">< 1 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/science/article/3352835/inspired-crocodile-scales-chinese-armour-tech-said-deflect-projectiles?utm_source=rss_feed" target="_blank" rel="noopener">Inspired by crocodile scales, Chinese armour tech said to deflect projectiles</a></h3>
-        <p class="summary">Chinese researchers say they have developed a crocodile-inspired ceramic body armour that can deflect projectiles and potentially offer a low-cost alternative for lightweight ballistic protection. The team – led by associate research fellow Zhaoxiu Jiang at Ningbo University – based their design on the asymmetric, overlapping scales of crocodile skin, which provide a protective barrier against pre</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">2 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/science/article/3353037/big-step-forward-optical-core-chinas-taiji-gravitational-wave-project?utm_source=rss_feed" target="_blank" rel="noopener">A big step forward for optical core of China’s Taiji gravitational wave project</a></h3>
-        <p class="summary">In the sci-fi novel The Three-Body Problem, humans build “gravitational wave antennas” to broadcast to the cosmos. Now, Chinese scientists have made a step forward in turning that idea into hardware – only in reverse. Science and Technology Daily reported on Saturday that a team from the Institute of Mechanics at the Chinese Academy of Sciences had developed the optical core of a giant space detec</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">4 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353075/china-confirms-dates-donald-trumps-state-visit-beijing?utm_source=rss_feed" target="_blank" rel="noopener">China confirms dates for President Donald Trump’s state visit to Beijing</a></h3>
-        <p class="summary">US President Donald Trump will pay a state visit to China from May 13 to 15, at the invitation of President Xi Jinping, the foreign ministry in Beijing said on Monday. It will be the first visit to China by a US president in almost nine years and comes at a time of heightened tensions between the two countries over a range of issues. It also coincides with the fragile US-Iran ceasefire and the blo</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">7 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353055/trumps-china-return-whats-changed-his-friendly-2017-visit?utm_source=rss_feed" target="_blank" rel="noopener">Trump’s China return: what’s changed since his ‘friendly’ 2017 visit</a></h3>
-        <p class="summary">Nine years after his lavish first visit to China as US president, Donald Trump is scheduled to head back to Beijing on May 13-15. With tensions over tariffs, Taiwan and tech rivalry still simmering, the summit will test whether the world’s two biggest powers can stabilise their fractious relationship. What to expect Pragmatic deals over grand resets Don’t look for a historic breakthrough. The focu</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">7 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353073/trump-tehran-and-qatari-tanker-transit-heres-what-happened-overnight?utm_source=rss_feed" target="_blank" rel="noopener">Trump, Tehran and a Qatari tanker transit: here’s what happened overnight</a></h3>
-        <p class="summary">The US-Israel war against Iran has now entered its tenth week and there has been little progress on the stalled peace talks. These are the major takeaways from what happened overnight. What did Trump say? Iran reportedly sent a response to Washington’s latest proposal – a one-page memo aimed at ending the war – but it was rejected by US President Donald Trump. “TOTALLY UNACCEPTABLE!” he wrote on s</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">7 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/news/china/politics/article/3353052/taiwans-cheng-li-wun-cross-strait-peace-meeting-xi-jinping-and-managing-ties-us?utm_source=rss_feed" target="_blank" rel="noopener">Taiwan’s Cheng Li-wun on cross-strait peace, meeting Xi Jinping and managing ties with US</a></h3>
-        <p class="summary">Cheng Li-wun is the chairwoman of Taiwan’s largest opposition party, the Kuomintang (KMT). In this far-ranging interview, she discusses her vision for peace and cooperation between Taiwan and mainland China, her meeting in April with Communist Party chief Xi Jinping and her coming trip to the United States in June. The original interview was conducted in Chinese. SCMP Plus members can read a Chine</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">10 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/plus/news/china/politics/article/3353046/taiwans-opposition-kmt-leader-restoring-stable-peace-beijing?utm_source=rss_feed" target="_blank" rel="noopener">Taiwan’s opposition KMT leader on restoring stable peace with Beijing</a></h3>
-        <p class="summary">Cheng Li-wun is the chairwoman of Taiwan’s largest opposition party, the Kuomintang (KMT). In this far-ranging interview, she discusses her vision for peace and cooperation between Taiwan and mainland China, her meeting in April with Communist Party chief Xi Jinping and her coming trip to the United States in June. The original interview was conducted in Chinese. SCMP Plus members can read a Chine</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">10 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/opinion/world-opinion/article/3352666/why-uaes-opec-exit-spells-beginning-end-gulf-unity?utm_source=rss_feed" target="_blank" rel="noopener">Why the UAE’s Opec exit spells the beginning of the end of Gulf unity</a></h3>
-        <p class="summary">On April 28, the United Arab Emirates informed the Organisation of Petroleum Exporting Countries (Opec) it was leaving. Three days’ notice. No call to Riyadh beforehand, apparently. The grievance about production quotas was years old: Abu Dhabi had threatened to quit in 2021. What’s changed has nothing to do with the barrel count. It is about who underwrites Abu Dhabi’s security when it acts on a </p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">10 小时前</span>
-        </div>
-      </article>
-      <article class="article">
-        <h3><a href="https://www.scmp.com/plus/news/china/article/3352959/chinese-transcript-scmps-interview-kmts-cheng-li-wun?utm_source=rss_feed" target="_blank" rel="noopener">Chinese transcript of SCMP’s interview with KMT’s Cheng Li-wun</a></h3>
-        <p class="summary">Cheng Li-wun is the chairwoman of Taiwan’s largest opposition party, the Kuomintang (KMT). In this wide-ranging interview, she discusses her vision for peace and cooperation between Taiwan and mainland China, her meeting in April with Communist Party chief Xi Jinping and her upcoming trip to the United States in June. The original interview was conducted in Chinese. SCMP Plus members can access th</p>
-        <div class="meta-row">
-          <span class="source">南华早报</span>
-          <span class="time">11 小时前</span>
-        </div>
-      </article>
+    <div class="category" id="cn-social">
+      <div class="cat-header">
+        <span class="cat-title">🌐 社会 <span class="count">6 篇</span></span>
+        <div class="pagination">
+            <button class="pg-btn" data-catid="cn-social" data-dir="-1" disabled aria-label="上一页">‹</button>
+            <span class="pg-info" id="cn-social-pi">第 1 / 2 页</span>
+            <button class="pg-btn" data-catid="cn-social" data-dir="1" aria-label="下一页">›</button>
+          </div>
       </div>
+      <div class="card-pages"><div class="card-page active"><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353101/why-chinas-new-duty-free-access-lifeline-south-african-exporters?utm_source=rss_feed" target="_blank" rel="noopener">Why China’s new duty-free access is a lifeline for South African exporters</a></h3>
+            <p class="summary">History was made this Labour Day, as China’s southern Shenzhen Bay port cleared 24 tonnes of South African apples and central Hunan province processed 6,000 bottles of South African wine – the first time these goods had reached the Asian economic giant under a new zero-tariff arrangement. The duty-free access for African partners from May 1, which saw the 10 per cent tariff rate for apples removed</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">< 1 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/science/article/3352835/inspired-crocodile-scales-chinese-armour-tech-said-deflect-projectiles?utm_source=rss_feed" target="_blank" rel="noopener">Inspired by crocodile scales, Chinese armour tech said to deflect projectiles</a></h3>
+            <p class="summary">Chinese researchers say they have developed a crocodile-inspired ceramic body armour that can deflect projectiles and potentially offer a low-cost alternative for lightweight ballistic protection. The team – led by associate research fellow Zhaoxiu Jiang at Ningbo University – based their design on the asymmetric, overlapping scales of crocodile skin, which provide a protective barrier against pre</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">2 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/science/article/3353037/big-step-forward-optical-core-chinas-taiji-gravitational-wave-project?utm_source=rss_feed" target="_blank" rel="noopener">A big step forward for optical core of China’s Taiji gravitational wave project</a></h3>
+            <p class="summary">In the sci-fi novel The Three-Body Problem, humans build “gravitational wave antennas” to broadcast to the cosmos. Now, Chinese scientists have made a step forward in turning that idea into hardware – only in reverse. Science and Technology Daily reported on Saturday that a team from the Institute of Mechanics at the Chinese Academy of Sciences had developed the optical core of a giant space detec</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">4 小时前</span>
+            </div>
+          </div></div><div class="card-page"><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353075/china-confirms-dates-donald-trumps-state-visit-beijing?utm_source=rss_feed" target="_blank" rel="noopener">China confirms dates for President Donald Trump’s state visit to Beijing</a></h3>
+            <p class="summary">US President Donald Trump will pay a state visit to China from May 13 to 15, at the invitation of President Xi Jinping, the foreign ministry in Beijing said on Monday. It will be the first visit to China by a US president in almost nine years and comes at a time of heightened tensions between the two countries over a range of issues. It also coincides with the fragile US-Iran ceasefire and the blo</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">7 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353055/trumps-china-return-whats-changed-his-friendly-2017-visit?utm_source=rss_feed" target="_blank" rel="noopener">Trump’s China return: what’s changed since his ‘friendly’ 2017 visit</a></h3>
+            <p class="summary">Nine years after his lavish first visit to China as US president, Donald Trump is scheduled to head back to Beijing on May 13-15. With tensions over tariffs, Taiwan and tech rivalry still simmering, the summit will test whether the world’s two biggest powers can stabilise their fractious relationship. What to expect Pragmatic deals over grand resets Don’t look for a historic breakthrough. The focu</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">7 小时前</span>
+            </div>
+          </div><div class="card">
+            <h3><a href="https://www.scmp.com/news/china/diplomacy/article/3353073/trump-tehran-and-qatari-tanker-transit-heres-what-happened-overnight?utm_source=rss_feed" target="_blank" rel="noopener">Trump, Tehran and a Qatari tanker transit: here’s what happened overnight</a></h3>
+            <p class="summary">The US-Israel war against Iran has now entered its 10th week and there has been little progress on the stalled peace talks. These are the major takeaways from what happened overnight. What did Trump say? Iran reportedly sent a response to Washington’s latest proposal – a one-page memo aimed at ending the war – but it was rejected by US President Donald Trump. “TOTALLY UNACCEPTABLE!” he wrote on so</p>
+            <div class="meta-row">
+              <span class="source">南华早报</span>
+              <span class="time">7 小时前</span>
+            </div>
+          </div></div></div>
     </div>
   </section>
 
@@ -738,14 +621,48 @@
   </div>
 
   <script>
-    document.querySelectorAll('.tab').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
-        document.querySelectorAll('section').forEach(function(s) { s.hidden = true; });
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.target).hidden = false;
+    (function () {
+      var curPage = {};
+
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+          document.querySelectorAll('section').forEach(function (s) { s.hidden = true; });
+          btn.classList.add('active');
+          var t = document.getElementById(btn.dataset.target);
+          if (t) t.hidden = false;
+        });
       });
-    });
+
+      // Pagination
+      document.querySelectorAll('.pg-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var catId = btn.dataset.catid;
+          var dir = parseInt(btn.dataset.dir, 10);
+          var cat = document.getElementById(catId);
+          if (!cat) return;
+
+          var pages = cat.querySelectorAll('.card-page');
+          var total = pages.length;
+          var cur = curPage[catId] || 0;
+          var next = cur + dir;
+          if (next < 0 || next >= total) return;
+
+          pages[cur].classList.remove('active');
+          pages[next].classList.add('active');
+          curPage[catId] = next;
+
+          var pi = document.getElementById(catId + '-pi');
+          if (pi) pi.textContent = '第 ' + (next + 1) + ' / ' + total + ' 页';
+
+          cat.querySelectorAll('.pg-btn').forEach(function (b) {
+            var d = parseInt(b.dataset.dir, 10);
+            b.disabled = (d < 0 && next === 0) || (d > 0 && next === total - 1);
+          });
+        });
+      });
+    })();
   </script>
 </body>
 </html>
