@@ -20,7 +20,7 @@ const CAT_ID: Record<Category, string> = {
 
 const CARDS_PER_PAGE = 3;
 const MAX_FINANCE = 10;
-const MAX_OTHER = 6;
+const MAX_OTHER = 8;
 
 function relativeTime(date: Date): string {
   const diff = Date.now() - date.getTime();
@@ -40,7 +40,7 @@ function escapeHtml(s: string): string {
 
 function cardHtml(a: Article): string {
   const title = escapeHtml(a.titleZh || a.title);
-  const summary = escapeHtml(a.summary ?? a.description ?? "（暂无摘要）");
+  const summary = escapeHtml(a.summary ?? a.titleZh ?? a.title);
   return `<div class="card">
             <h3><a href="${escapeHtml(a.link)}" target="_blank" rel="noopener">${title}</a></h3>
             <p class="summary">${summary}</p>

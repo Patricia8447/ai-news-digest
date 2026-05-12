@@ -49,10 +49,11 @@ async function getSummary(
         err?.status === 429 ||
         (err?.status === 401 &&
           String(err?.message ?? "").toLowerCase().includes("limit"));
-      if (isRateLimit && attempt < 3) {
-        const wait = (attempt + 1) * 30_000; // 30s → 60s → 90s
+      if (attempt < 3) {
+        const wait = isRateLimit ? (attempt + 1) * 30_000 : (attempt + 1) * 5_000;
+        const tag = isRateLimit ? "限速" : "重试";
         console.error(
-          `  [限速] "${a.title.slice(0, 30)}…" — 等待 ${wait / 1000}s 重试 (${attempt + 1}/3)...`
+          `  [${tag}] "${a.title.slice(0, 30)}…" — 等待 ${wait / 1000}s (${attempt + 1}/3)...`
         );
         await sleep(wait);
         continue;
@@ -76,7 +77,14 @@ export async function addSummaries(articles: Article[]): Promise<Article[]> {
       results.push({ ...a, ...result });
     } catch (err) {
       console.error(`  [摘要失败] "${a.title}": ${err}`);
-      results.push(a);
+      // 兜底：仅用标题再试一次
+      try {
+        await sleep(INTERVAL_MS);
+        const fallback = await getSummary(client, { ...a, description: undefined });
+        results.push({ ...a, ...fallback });
+      } catch {
+        results.push(a);
+      }
     }
   }
 
